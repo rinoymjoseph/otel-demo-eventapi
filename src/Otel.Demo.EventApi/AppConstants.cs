@@ -5,7 +5,7 @@
         public const string OTEL_SERVCICE_NAME = "EventApi";
 
         public const string URL_OTEL_EXPORTER = "otel_exporter_url";
-        public const string URL_ASSETDB_API = "assetdb_api_url";
+        public const string URL_DATA_API = "data_api_url";
 
         public const string REQUEST_GET_EVENTS = "/assetdb/GetEvents";
 

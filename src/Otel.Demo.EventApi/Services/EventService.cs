@@ -20,7 +20,7 @@ namespace Otel.Demo.EventApi.Services
         public async Task<JsonArray?> GetEvents(string? assetId)
         {
             using var activity_GetEvents = _telemetryService.GetActivitySource().StartActivity("GetEvents");
-            var assetDBApiUrl = _configuration.GetValue<string>(AppConstants.URL_ASSETDB_API);
+            var assetDBApiUrl = _configuration.GetValue<string>(AppConstants.URL_DATA_API);
             var request = new HttpRequestMessage(HttpMethod.Get, $"{assetDBApiUrl}{AppConstants.REQUEST_GET_EVENTS}/{assetId}");
             var httpClient = _httpClientFactory.CreateClient();
             var httpResult = await httpClient.SendAsync(request);
