@@ -5,13 +5,15 @@ namespace Otel.Demo.EventApi.Services
 {
     public class EventService : IEventService
     {
+        private ILogger _logger;
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IConfiguration _configuration;
         private readonly ITelemetryService _telemetryService;
 
-        public EventService(IConfiguration configuration, IHttpClientFactory httpClientFactory,
+        public EventService(ILogger logger, IConfiguration configuration, IHttpClientFactory httpClientFactory,
            ITelemetryService telemetryService)
         {
+            _logger = logger;
             _httpClientFactory = httpClientFactory;
             _configuration = configuration;
             _telemetryService = telemetryService;
@@ -19,6 +21,7 @@ namespace Otel.Demo.EventApi.Services
 
         public async Task<JsonArray?> GetEvents(string? assetId)
         {
+            _logger.LogInformation($"Entering GetEvents : assetId -> {assetId}");
             using var activity_GetEvents = _telemetryService.GetActivitySource().StartActivity("GetEvents");
             var assetDBApiUrl = _configuration.GetValue<string>(AppConstants.URL_DATA_API);
             var request = new HttpRequestMessage(HttpMethod.Get, $"{assetDBApiUrl}{AppConstants.REQUEST_GET_EVENTS}/{assetId}");
@@ -27,6 +30,7 @@ namespace Otel.Demo.EventApi.Services
             var response = await httpResult.Content.ReadAsStringAsync();
             httpResult.EnsureSuccessStatusCode();
             var eventData = JsonNode.Parse(response)?.AsArray();
+            _logger.LogInformation($"Exiting GetEvents : assetId -> {assetId}");
             return eventData;
         }
     }
