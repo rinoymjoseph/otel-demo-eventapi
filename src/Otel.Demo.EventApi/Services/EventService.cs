@@ -10,7 +10,7 @@ namespace Otel.Demo.EventApi.Services
         private readonly IConfiguration _configuration;
         private readonly ITelemetryService _telemetryService;
 
-        public EventService(ILogger logger, IConfiguration configuration, IHttpClientFactory httpClientFactory,
+        public EventService(ILogger<EventService> logger, IConfiguration configuration, IHttpClientFactory httpClientFactory,
            ITelemetryService telemetryService)
         {
             _logger = logger;

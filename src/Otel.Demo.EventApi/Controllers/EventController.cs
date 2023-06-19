@@ -13,7 +13,7 @@ namespace Otel.Demo.EventApi.Controllers
         private readonly IEventService _eventService;
         private readonly ITelemetryService _telemetryService;
 
-        public EventController(ILogger logger, ITelemetryService telemetryService, IEventService eventService)
+        public EventController(ILogger<EventController> logger, ITelemetryService telemetryService, IEventService eventService)
         {
             _logger = logger;
             _telemetryService = telemetryService;
