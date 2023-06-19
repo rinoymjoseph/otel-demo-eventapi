@@ -37,7 +37,6 @@ namespace Otel.Demo.EventApi.Controllers
             activity_GetEventsOfAsset?.SetTag("AssetId", assetId);
             activity_GetEventsOfAsset?.SetTag("ContextId", contextId);
             Baggage.SetBaggage("ContextId", contextId);
-            activity_GetEventsOfAsset?.AddEvent(new($"GetEventsOfAsset -> { assetId }"));
             var result = await _eventService.GetEvents(assetId);
             _logger.LogInformation($"Exiting GetEventsOfAsset : assetId -> {assetId}");
             return Ok(result);
