@@ -8,5 +8,9 @@ namespace Otel.Demo.EventApi.Services.Interfaces
         ActivitySource GetActivitySource();
 
         Counter<long> GetEventsOfAssetReqCounter();
+
+        Counter<long> GetEventsOfAssetReqSuccessCounter();
+
+        Counter<long> GetEventsOfAssetReqFailureCounter();
     }
 }

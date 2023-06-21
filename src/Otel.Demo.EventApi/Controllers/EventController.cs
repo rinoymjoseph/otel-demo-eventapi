@@ -1,7 +1,6 @@
-﻿using Otel.Demo.EventApi.Services.Interfaces;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using OpenTelemetry;
-using Microsoft.Extensions.Logging;
+using Otel.Demo.EventApi.Services.Interfaces;
 
 namespace Otel.Demo.EventApi.Controllers
 {
@@ -37,9 +36,23 @@ namespace Otel.Demo.EventApi.Controllers
             activity_GetEventsOfAsset?.SetTag("AssetId", assetId);
             activity_GetEventsOfAsset?.SetTag("ContextId", contextId);
             Baggage.SetBaggage("ContextId", contextId);
-            var result = await _eventService.GetEvents(assetId);
-            _logger.LogInformation($"Exiting GetEventsOfAsset : assetId -> {assetId}");
-            return Ok(result);
+
+            try
+            {
+                _telemetryService.GetEventsOfAssetReqSuccessCounter().Add(1,
+                    new("Action", nameof(GetEventsOfAsset)),
+                    new("Controller", nameof(EventController)));
+                var result = await _eventService.GetEvents(assetId);
+                _logger.LogInformation($"Exiting GetEventsOfAsset : assetId -> {assetId}");
+                return Ok(result);
+            }
+            catch (Exception)
+            {
+                _telemetryService.GetEventsOfAssetReqFailureCounter().Add(1,
+                    new("Action", nameof(GetEventsOfAsset)),
+                    new("Controller", nameof(EventController)));
+                throw;
+            }
         }
     }
 }
