@@ -23,8 +23,8 @@ namespace Otel.Demo.EventApi.Services
         {
             _logger.LogInformation($"Entering GetEvents : assetId -> {assetId}");
             using var activity_GetEvents = _telemetryService.GetActivitySource().StartActivity("GetEvents");
-            var assetDBApiUrl = _configuration.GetValue<string>(AppConstants.URL_DATA_API);
-            var request = new HttpRequestMessage(HttpMethod.Get, $"{assetDBApiUrl}{AppConstants.REQUEST_GET_EVENTS}/{assetId}");
+            var dataApiUrl = _configuration.GetValue<string>(AppConstants.DATA_API_URL);
+            var request = new HttpRequestMessage(HttpMethod.Get, $"{dataApiUrl}{AppConstants.REQUEST_GET_EVENTS}/{assetId}");
             var httpClient = _httpClientFactory.CreateClient();
             var httpResult = await httpClient.SendAsync(request);
             var response = await httpResult.Content.ReadAsStringAsync();
